@@ -10,6 +10,10 @@ function Users() {
   const [isDriver, setIsDriver] = useState(false);
   // parsisiusti usersius ir iskonsolinti
   useEffect(() => {
+    getUsers();
+  }, []);
+
+  function getUsers() {
     axios
       .get(`${baseUrl}/users`)
       .then((ats) => {
@@ -19,7 +23,8 @@ function Users() {
       .catch((error) => {
         console.warn('ivyko klaida:', error);
       });
-  }, []);
+  }
+
   // sugeneruoti html
 
   console.log('usersArr ===', usersArr);
@@ -28,7 +33,30 @@ function Users() {
     event.preventDefault();
     console.log('js is in control');
     // sudeti viska i viena obj
+    const newUser = {
+      name: nameVal,
+      town: townVal,
+      isDriver,
+    };
+    console.log('newUser ===', newUser);
     // siusiuti ta ob i back
+    axios
+      .post(`${baseUrl}/users`, newUser)
+      .then((ats) => {
+        console.log('ats ===', ats);
+        if (ats.status === 201) {
+          // success useris sukurtas
+          // atnaujinti sarasa
+          getUsers();
+          return;
+        }
+        // neskeme, nepavyko
+      })
+      .catch((error) => {
+        console.warn('ivyko klaida:', error);
+        // show errors
+        alert('klaida');
+      });
     // pavyko ar ne
   }
 
@@ -87,6 +115,8 @@ function Users() {
           <li className='list-group-item' key={uObj.id}>
             (id: {uObj.id}) {uObj.name} yra is {uObj.town}. vairuoja:{' '}
             {uObj.isDriver ? 'Taip' : 'Ne'}
+            <button className='btn btn-danger mx-3'>delete</button>
+            <button className='btn btn-success'>edit</button>
           </li>
         ))}
       </ul>
