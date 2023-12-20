@@ -62,6 +62,10 @@ function Users() {
 
   console.log('nameVal ===', nameVal);
 
+  function handleDelete(idToDelete) {
+    console.log('deleting post', idToDelete);
+  }
+
   return (
     <div>
       <h2>Users</h2>
@@ -115,7 +119,12 @@ function Users() {
           <li className='list-group-item' key={uObj.id}>
             (id: {uObj.id}) {uObj.name} yra is {uObj.town}. vairuoja:{' '}
             {uObj.isDriver ? 'Taip' : 'Ne'}
-            <button className='btn btn-danger mx-3'>delete</button>
+            <button
+              onClick={() => handleDelete(uObj.id)}
+              // onClick={handleDelete.bind(null, uObj.id, event)}
+              className='btn btn-danger mx-3'>
+              delete
+            </button>
             <button className='btn btn-success'>edit</button>
           </li>
         ))}
