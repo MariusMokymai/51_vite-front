@@ -5,6 +5,7 @@ const baseUrl = 'http://localhost:3000/api';
 
 function Users() {
   const [isEditOn, setIsEditOn] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(0);
   const [usersArr, setUsersArr] = useState([]);
   const [nameVal, setNameVal] = useState('');
   const [townVal, setTownVal] = useState('');
@@ -41,6 +42,21 @@ function Users() {
 
   function handleUpdateFetch() {
     console.log('handleUpdateFetch() updating');
+    const updatedUser = {
+      name: nameVal,
+      town: townVal,
+      isDriver,
+    };
+    const updateUrl = `${baseUrl}/users/${currentUserId}`;
+    axios
+      .put(updateUrl, updatedUser)
+      .then((ats) => {
+        console.log('ats ===', ats);
+      })
+      .catch((error) => {
+        console.warn('ivyko klaida:', error);
+        console.warn(error.response.data);
+      });
   }
 
   function handleNewUserSubmit() {
@@ -80,6 +96,7 @@ function Users() {
     console.log('handleEdit', idToEdit);
     setIsEditOn(true);
     fillFormWihtData(idToEdit);
+    setCurrentUserId(idToEdit);
   }
 
   function fillFormWihtData(id) {
