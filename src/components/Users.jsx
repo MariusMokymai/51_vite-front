@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 const baseUrl = 'http://localhost:3000/api';
 
 function Users() {
+  const [isEditOn, setIsEditOn] = useState(false);
   const [usersArr, setUsersArr] = useState([]);
   const [nameVal, setNameVal] = useState('');
   const [townVal, setTownVal] = useState('');
@@ -29,8 +30,20 @@ function Users() {
 
   console.log('usersArr ===', usersArr);
 
-  function handleNewUserSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
+    if (isEditOn) {
+      handleUpdateFetch();
+    } else {
+      handleNewUserSubmit();
+    }
+  }
+
+  function handleUpdateFetch() {
+    console.log('handleUpdateFetch() updating');
+  }
+
+  function handleNewUserSubmit() {
     console.log('js is in control');
     // sudeti viska i viena obj
     const newUser = {
@@ -48,6 +61,9 @@ function Users() {
           // success useris sukurtas
           // atnaujinti sarasa
           getUsers();
+          setNameVal('');
+          setTownVal('');
+          setIsDriver(false);
           return;
         }
         // neskeme, nepavyko
@@ -60,10 +76,39 @@ function Users() {
     // pavyko ar ne
   }
 
+  function handleEdit(idToEdit) {
+    console.log('handleEdit', idToEdit);
+    setIsEditOn(true);
+    fillFormWihtData(idToEdit);
+  }
+
+  function fillFormWihtData(id) {
+    // supuldyti forma
+    const found = usersArr.find((uObj) => uObj.id === id);
+    console.log('found ===', found);
+    setNameVal(found.name);
+    setTownVal(found.town);
+    setIsDriver(found.isDriver);
+  }
+
   console.log('nameVal ===', nameVal);
 
   function handleDelete(idToDelete) {
     console.log('deleting post', idToDelete);
+    // siutti uzklausa istrynimui
+    // http://localhost:3000/api/users/2
+    const delUrl = `${baseUrl}/users/${idToDelete}`;
+    axios
+      .delete(delUrl)
+      .then((ats) => {
+        console.log('ats ===', ats);
+        // pavyko, atnaujinti sarasa
+        // getUsers(); // sukuria papildoma uzklausa
+        setUsersArr(ats.data);
+      })
+      .catch((error) => {
+        console.warn('ivyko klaida:', error);
+      });
   }
 
   return (
@@ -71,7 +116,7 @@ function Users() {
       <h2>Users</h2>
 
       <h3>Add new user</h3>
-      <form onSubmit={handleNewUserSubmit} className='border p-4 '>
+      <form onSubmit={handleSubmit} className='border p-4 '>
         <div className='mb-3'>
           <label htmlFor='name' className='form-label'>
             Name
@@ -98,7 +143,7 @@ function Users() {
         </div>
         <div className='mb-3 form-check'>
           <input
-            value={isDriver}
+            checked={isDriver}
             onChange={(e) => setIsDriver(e.target.checked)}
             type='checkbox'
             className='form-check-input'
@@ -109,9 +154,17 @@ function Users() {
           </label>
         </div>
 
-        <button type='submit' className='btn btn-outline-info'>
-          Create
-        </button>
+        {isEditOn === false && (
+          <button type='submit' className='btn btn-outline-info'>
+            Create
+          </button>
+        )}
+
+        {isEditOn === true && (
+          <button type='submit' className='btn btn-secondary'>
+            Update
+          </button>
+        )}
       </form>
 
       <ul className='list-group'>
@@ -125,7 +178,11 @@ function Users() {
               className='btn btn-danger mx-3'>
               delete
             </button>
-            <button className='btn btn-success'>edit</button>
+            <button
+              onClick={() => handleEdit(uObj.id)}
+              className='btn btn-success'>
+              edit
+            </button>
           </li>
         ))}
       </ul>
