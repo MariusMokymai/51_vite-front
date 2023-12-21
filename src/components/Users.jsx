@@ -10,6 +10,8 @@ function Users() {
   const [nameVal, setNameVal] = useState('');
   const [townVal, setTownVal] = useState('');
   const [isDriver, setIsDriver] = useState(false);
+  const [errorField, setErrorField] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   // parsisiusti usersius ir iskonsolinti
   useEffect(() => {
     getUsers();
@@ -31,8 +33,14 @@ function Users() {
 
   console.log('usersArr ===', usersArr);
 
+  function clearErrrors() {
+    setErrorField('');
+    setErrorMsg('');
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
+    clearErrrors();
     if (isEditOn) {
       handleUpdateFetch();
     } else {
@@ -85,9 +93,15 @@ function Users() {
         // neskeme, nepavyko
       })
       .catch((error) => {
-        console.warn('ivyko klaida:', error);
+        console.warn('ivyko klaida sukuriant user:', error);
+        const { status, data } = error.response;
+        if (status === 400) {
+          // handleError(data)
+          console.log('data ===', data);
+          setErrorField(data.field);
+          setErrorMsg(data.error);
+        }
         // show errors
-        alert('klaida');
       });
     // pavyko ar ne
   }
@@ -142,9 +156,14 @@ function Users() {
             value={nameVal}
             onChange={(e) => setNameVal(e.target.value)}
             type='text'
-            className='form-control'
+            className={`form-control ${
+              errorField === 'name' ? 'is-invalid' : ''
+            }`}
             id='name'
           />
+          {errorField === 'name' && (
+            <span className='text-danger'>{errorMsg}</span>
+          )}
         </div>
         <div className='mb-3'>
           <label htmlFor='town' className='form-label'>
@@ -154,9 +173,14 @@ function Users() {
             value={townVal}
             onChange={(e) => setTownVal(e.target.value)}
             type='text'
-            className='form-control'
+            className={`form-control ${
+              errorField === 'town' ? 'is-invalid' : ''
+            }`}
             id='town'
           />
+          {errorField === 'town' && (
+            <span className='text-danger'>{errorMsg}</span>
+          )}
         </div>
         <div className='mb-3 form-check'>
           <input
