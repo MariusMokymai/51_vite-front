@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const loginUrl = 'http://localhost:3000/api/auth/login';
 
-function Login() {
+function Login({ onLogin }) {
   const [authState, setAuthState] = useState({
     email: 'james@bond.com',
     password: '123456',
@@ -43,14 +43,19 @@ function Login() {
       .then((ats) => {
         console.log('ats ===', ats);
         const { token } = ats.data;
-        console.log('token ===', token);
-        // issaugoti token i localstorage
-        localStorage.setItem('bit_token', token);
+        if (token) {
+          // handle success
+          console.log('token ===', token);
+          // issaugoti token i localstorage
+          localStorage.setItem('bit_token', token);
+          onLogin(authState.email);
+        }
       })
       .catch((error) => {
         console.warn('handleLogin ivyko klaida:', error);
         const errorAxios = error.response.data;
         console.log('errorAxios ===', errorAxios);
+        // handle error
       });
   }
 
