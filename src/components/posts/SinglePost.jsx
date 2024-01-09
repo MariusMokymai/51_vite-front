@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const postObj = {
   post_id: 1,
   title: 'Post 1',
@@ -22,5 +24,16 @@ function SinglePost({ post }) {
     </li>
   );
 }
+SinglePost.propTypes = {
+  post: PropTypes.exact({
+    post_id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    commentCount: PropTypes.number,
+    categoryName: PropTypes.string.isRequired,
+  }),
+};
 
 export default SinglePost;
