@@ -1,5 +1,13 @@
 # Steps
 
-1. pasidaryti kad veiktu delete
-2. padaryti kad edit paspaudus formos laukai susipildytu su info apie ta post
+1. `npm i -D react-router-dom@latest`
+2.
+
+```js
+main.jsx
+<BrowserRouter>
+  <App />
+</BrowserRouter>
+```
+
 3. siusti PUT /api/users/id kad atnaujinti irasa

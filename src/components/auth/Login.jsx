@@ -60,7 +60,7 @@ function Login({ onLogin }) {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h2>Login</h2>
       <h3>
         {authState.email} - {authState.password}

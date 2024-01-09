@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function Header({ isUserLoggedIn, email, logout }) {
   // TODO: propTYPES validation
@@ -23,30 +24,30 @@ function Header({ isUserLoggedIn, email, logout }) {
             className='collapse navbar-collapse justify-content-end'
             id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-              <a className='nav-link ' href='#'>
+              <Link className='nav-link ' to='/'>
                 Home
-              </a>
-              <a className='nav-link' href='#'>
+              </Link>
+              <Link className='nav-link' to='/posts'>
                 Posts
-              </a>
-              <a className='nav-link' href='#'>
+              </Link>
+              <Link className='nav-link' to='/about'>
                 About
-              </a>
+              </Link>
 
               {!isUserLoggedIn && (
-                <a className='nav-link' href='#'>
+                <a className='nav-link' to='/login'>
                   Login
                 </a>
               )}
 
               {isUserLoggedIn && (
                 <>
-                  <a onClick={logout} className='nav-link' href='#'>
+                  <Link onClick={logout} className='nav-link' to='#'>
                     Logout
-                  </a>
-                  <a className='nav-link disabled' href='#'>
+                  </Link>
+                  <Link className='nav-link disabled' to='#'>
                     {email}
-                  </a>
+                  </Link>
                 </>
               )}
             </div>
