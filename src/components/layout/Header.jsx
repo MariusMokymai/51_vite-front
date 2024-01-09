@@ -35,9 +35,9 @@ function Header({ isUserLoggedIn, email, logout }) {
               </Link>
 
               {!isUserLoggedIn && (
-                <a className='nav-link' to='/login'>
+                <Link className='nav-link' to='/login'>
                   Login
-                </a>
+                </Link>
               )}
 
               {isUserLoggedIn && (

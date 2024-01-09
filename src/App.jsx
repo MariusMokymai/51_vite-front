@@ -9,32 +9,13 @@ import About from './components/About';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 
-const postUrl = 'http://localhost:3000/api/posts/';
-
 function App() {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('email');
 
   const [posts, setPosts] = useState([]);
 
   // parisisiusti postus ir paduoti i postsLIst
-
-  useEffect(() => {
-    getPosts(postUrl);
-    function getPosts(url) {
-      console.log('getPosts');
-      axios
-        .get(url)
-        .then((response) => {
-          console.log('response ===', response);
-          const posts = response.data;
-          setPosts(posts);
-        })
-        .catch((error) => {
-          console.log('error ===', error);
-        });
-    }
-  }, []);
 
   function handleLogin(email) {
     console.log('user Logged in', email);
@@ -68,7 +49,7 @@ function App() {
             </>
           }
         />
-        <Route path='/posts' element={<PostsList list={posts} />} />
+        <Route path='/posts' element={<PostsList />} />
         <Route path='/about' element={<About />} />
       </Routes>
     </div>
