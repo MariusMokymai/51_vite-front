@@ -2,10 +2,13 @@
 import { useState } from 'react';
 import Login from './components/auth/Login';
 import Header from './components/layout/Header';
+import PostsList from './components/posts/PostsList';
 
 function App() {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [userEmail, setUserEmail] = useState('email');
+
+  // parisisiusti postus ir paduoti i postsLIst
 
   function handleLogin(email) {
     console.log('user Logged in', email);
@@ -29,6 +32,7 @@ function App() {
       {isUserLoggedIn === true && (
         <div className='alert alert-success'>You have logged in</div>
       )}
+      <PostsList />
     </div>
   );
 }
