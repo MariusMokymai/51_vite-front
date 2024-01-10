@@ -6,9 +6,10 @@ import PostsList from './components/posts/PostsList';
 import './App.css';
 
 import About from './components/About';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import { useAuthContext } from './store/authContext';
+import UsersOnlyPage from './pages/UsersOnlyPage';
 
 function App() {
   const { isUserLoggedIn } = useAuthContext();
@@ -30,8 +31,16 @@ function App() {
             </>
           }
         />
-        <Route path='/posts' element={<PostsList />} />
+        {/* Protected Route */}
+        <Route
+          path='/posts'
+          element={
+            isUserLoggedIn ? <PostsList /> : <Navigate to={'/user-only'} />
+          }
+        />
+        <Route path='/home' element={<Navigate to={'/'} />} />
         <Route path='/about' element={<About />} />
+        <Route path='/user-only' element={<UsersOnlyPage />} />
       </Routes>
     </div>
   );
