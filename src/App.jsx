@@ -13,8 +13,6 @@ function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('email');
 
-  const [posts, setPosts] = useState([]);
-
   // parisisiusti postus ir paduoti i postsLIst
 
   function handleLogin(email) {
