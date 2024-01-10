@@ -28,9 +28,11 @@ function Header() {
               <Link className='nav-link ' to='/'>
                 Home
               </Link>
-              <Link className='nav-link' to='/posts'>
-                Posts
-              </Link>
+              {isUserLoggedIn && (
+                <Link className='nav-link' to='/posts'>
+                  Posts
+                </Link>
+              )}
               <Link className='nav-link' to='/about'>
                 About
               </Link>

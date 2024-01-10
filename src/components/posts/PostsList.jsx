@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import SinglePost from './SinglePost';
 import axios from 'axios';
+import { useAuthContext } from '../../store/authContext';
 
 const postUrl = 'http://localhost:3000/api/posts/';
 
 function PostsList() {
   const [posts, setPosts] = useState([]);
-  const tokenStorage = localStorage.getItem('bit_token');
-  const [token, setToken] = useState(tokenStorage);
-  console.log('token ===', token);
-  // parisisiusti postus ir paduoti i postsLIst
+  const { token } = useAuthContext();
 
   useEffect(() => {
     // if token tada
