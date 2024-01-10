@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useAuthContext } from '../../store/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const loginUrl = 'http://localhost:3000/api/auth/login';
 
 function Login() {
+  const navigate = useNavigate();
   // pasiimti is kontext
   const { login } = useAuthContext();
 
@@ -51,6 +53,7 @@ function Login() {
           // handle success
           console.log('token ===', token);
           login(token, authState.email);
+          navigate('/posts');
           // issaugoti token i localstorage
           // localStorage.setItem('bit_token', token);
           // onLogin(authState.email);
