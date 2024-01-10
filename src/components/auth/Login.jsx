@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useAuthContext } from '../../store/authContext';
 
 const loginUrl = 'http://localhost:3000/api/auth/login';
 
-function Login({ onLogin }) {
+function Login() {
+  // pasiimti is kontext
+  const { login } = useAuthContext();
+
   const [authState, setAuthState] = useState({
     email: 'james@bond.com',
     password: '123456',
@@ -46,9 +50,10 @@ function Login({ onLogin }) {
         if (token) {
           // handle success
           console.log('token ===', token);
+          login(token, authState.email);
           // issaugoti token i localstorage
-          localStorage.setItem('bit_token', token);
-          onLogin(authState.email);
+          // localStorage.setItem('bit_token', token);
+          // onLogin(authState.email);
         }
       })
       .catch((error) => {

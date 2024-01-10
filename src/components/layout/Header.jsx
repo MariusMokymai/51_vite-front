@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../../store/authContext';
 
-function Header({ isUserLoggedIn, email, logout }) {
-  // TODO: propTYPES validation
+function Header() {
+  const { isUserLoggedIn, logout, userEmail: email } = useAuthContext();
   return (
     <div>
       <nav className='navbar navbar-expand-md bg-body-tertiary'>
@@ -58,10 +59,10 @@ function Header({ isUserLoggedIn, email, logout }) {
   );
 }
 
-Header.propTypes = {
-  isUserLoggedIn: PropTypes.bool.isRequired,
-  email: PropTypes.string,
-  logout: PropTypes.func.isRequired,
-};
+// Header.propTypes = {
+//   isUserLoggedIn: PropTypes.bool.isRequired,
+//   email: PropTypes.string,
+//   logout: PropTypes.func.isRequired,
+// };
 
 export default Header;
