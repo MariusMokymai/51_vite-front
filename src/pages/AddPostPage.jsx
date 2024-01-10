@@ -1,5 +1,9 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useAuthContext } from '../store/authContext';
+
+const postsUrl = 'http://localhost:3000/api/posts';
 
 const postObj = {
   title: 'Post 1',
@@ -45,8 +49,26 @@ function AddPostPage() {
       console.log('Submited');
       console.log('valuesObj ===', valuesObj);
       // fetch/axios to be
+      sendCreateNewPost(valuesObj);
     },
   });
+
+  const { token } = useAuthContext();
+
+  function sendCreateNewPost(data) {
+    axios
+      .post(postsUrl, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((ats) => {
+        console.log('ats ===', ats);
+      })
+      .catch((error) => {
+        console.warn('ivyko klaida:', error.response.data);
+      });
+  }
 
   // console.log('formik.values ===', formik.values);
   console.log('formik.errors ===', formik.errors);
@@ -73,6 +95,7 @@ function AddPostPage() {
             <p className='text-danger'>{formik.errors.title}</p>
           )}
         </div>
+
         <div className='mb-3'>
           <label htmlFor='author' className='form-label'>
             Author
