@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const postObj = {
   title: 'Post 1',
@@ -31,11 +32,15 @@ function AddPostPage() {
   const formik = useFormik({
     initialValues: {
       title: '',
-      author: ' Band',
-      content: 'Body of post 1',
+      author: '',
+      content: '',
       date: '',
       cat_id: 1,
     },
+    validationSchema: Yup.object({
+      title: Yup.string().min(3).required('Privalomas laukas'),
+      author: Yup.string().min(3).required(),
+    }),
     onSubmit: (valuesObj) => {
       console.log('Submited');
       console.log('valuesObj ===', valuesObj);
@@ -43,7 +48,9 @@ function AddPostPage() {
     },
   });
 
-  console.log('formik.values ===', formik.values);
+  // console.log('formik.values ===', formik.values);
+  console.log('formik.errors ===', formik.errors);
+  console.log('formik.touched ===', formik.touched);
 
   return (
     <div className='container'>
@@ -56,11 +63,15 @@ function AddPostPage() {
           </label>
           <input
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.title}
             type='text'
             className='form-control'
             id='title'
           />
+          {formik.touched.title && formik.errors.title && (
+            <p className='text-danger'>{formik.errors.title}</p>
+          )}
         </div>
         <div className='mb-3'>
           <label htmlFor='author' className='form-label'>
@@ -68,11 +79,15 @@ function AddPostPage() {
           </label>
           <input
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.author}
             type='text'
             className='form-control'
             id='author'
           />
+          {formik.touched.author && formik.errors.author && (
+            <p className='text-danger'>{formik.errors.author}</p>
+          )}
         </div>
         <div className='mb-3'>
           <label htmlFor='date' className='form-label'>
@@ -80,6 +95,7 @@ function AddPostPage() {
           </label>
           <input
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.date}
             type='datetime-local'
             className='form-control'
@@ -92,6 +108,7 @@ function AddPostPage() {
           </label>
           <textarea
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.content}
             className='form-control'
             id='content'
@@ -103,6 +120,7 @@ function AddPostPage() {
           </label>
           <select
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.cat_id}
             className='form-select'
             aria-label='Default select example'
