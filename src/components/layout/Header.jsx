@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuthContext } from '../../store/authContext';
 
 function Header() {
@@ -25,22 +25,27 @@ function Header() {
             className='collapse navbar-collapse justify-content-end'
             id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-              <Link className='nav-link ' to='/'>
+              <NavLink className='nav-link ' to='/'>
                 Home
-              </Link>
+              </NavLink>
               {isUserLoggedIn && (
-                <Link className='nav-link' to='/posts'>
-                  Posts
-                </Link>
+                <>
+                  <NavLink className='nav-link' to='/posts'>
+                    Posts
+                  </NavLink>
+                  <NavLink className='nav-link' to='/add-post'>
+                    Add Post
+                  </NavLink>
+                </>
               )}
-              <Link className='nav-link' to='/about'>
+              <NavLink className='nav-link' to='/about'>
                 About
-              </Link>
+              </NavLink>
 
               {!isUserLoggedIn && (
-                <Link className='nav-link' to='/login'>
+                <NavLink className='nav-link' to='/login'>
                   Login
-                </Link>
+                </NavLink>
               )}
 
               {isUserLoggedIn && (

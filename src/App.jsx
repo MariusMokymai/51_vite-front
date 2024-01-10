@@ -10,6 +10,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import { useAuthContext } from './store/authContext';
 import UsersOnlyPage from './pages/UsersOnlyPage';
+import AddPostPage from './pages/AddPostPage';
 
 function App() {
   const { isUserLoggedIn } = useAuthContext();
@@ -36,6 +37,12 @@ function App() {
           path='/posts'
           element={
             isUserLoggedIn ? <PostsList /> : <Navigate to={'/user-only'} />
+          }
+        />
+        <Route
+          path='/add-post'
+          element={
+            isUserLoggedIn ? <AddPostPage /> : <Navigate to={'/user-only'} />
           }
         />
         <Route path='/home' element={<Navigate to={'/'} />} />

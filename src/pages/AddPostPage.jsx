@@ -1,3 +1,5 @@
+import { useFormik } from 'formik';
+
 const postObj = {
   title: 'Post 1',
   author: 'James Band',
@@ -26,47 +28,86 @@ const categotries = [
 ];
 
 function AddPostPage() {
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      author: ' Band',
+      content: 'Body of post 1',
+      date: '',
+      cat_id: 1,
+    },
+    onSubmit: (valuesObj) => {
+      console.log('Submited');
+      console.log('valuesObj ===', valuesObj);
+      // fetch/axios to be
+    },
+  });
+
+  console.log('formik.values ===', formik.values);
+
   return (
-    <div>
+    <div className='container'>
       <h2>Create Post</h2>
 
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <div className='mb-3'>
-          <label htmlFor='exampleInputEmail1' className='form-label'>
+          <label htmlFor='title' className='form-label'>
             Title
           </label>
           <input
+            onChange={formik.handleChange}
+            value={formik.values.title}
             type='text'
             className='form-control'
-            id='exampleInputEmail1'
-            aria-describedby='emailHelp'
+            id='title'
           />
         </div>
         <div className='mb-3'>
-          <label htmlFor='exampleInputPassword1' className='form-label'>
+          <label htmlFor='author' className='form-label'>
             Author
           </label>
           <input
+            onChange={formik.handleChange}
+            value={formik.values.author}
             type='text'
             className='form-control'
-            id='exampleInputPassword1'
+            id='author'
           />
         </div>
         <div className='mb-3'>
-          <label htmlFor='exampleInputPassword1' className='form-label'>
+          <label htmlFor='date' className='form-label'>
+            Date
+          </label>
+          <input
+            onChange={formik.handleChange}
+            value={formik.values.date}
+            type='datetime-local'
+            className='form-control'
+            id='date'
+          />
+        </div>
+        <div className='mb-3'>
+          <label htmlFor='content' className='form-label'>
             Content
           </label>
           <textarea
+            onChange={formik.handleChange}
+            value={formik.values.content}
             className='form-control'
-            id='exampleFormControlTextarea1'
+            id='content'
             rows='3'></textarea>
         </div>
         <div className='mb-3'>
           <label htmlFor='exampleInputPassword1' className='form-label'>
             Category
           </label>
-          <select className='form-select' aria-label='Default select example'>
-            <option selected>Select category</option>
+          <select
+            onChange={formik.handleChange}
+            value={formik.values.cat_id}
+            className='form-select'
+            aria-label='Default select example'
+            id='cat_id'>
+            <option defaultValue>Select category</option>
             {categotries.map((cat) => (
               <option key={cat.cat_id} value={cat.cat_id}>
                 {cat.title}
