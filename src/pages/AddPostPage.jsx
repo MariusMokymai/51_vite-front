@@ -79,12 +79,12 @@ function AddPostPage() {
       date: '',
       cat_id: 3,
     },
-    validationSchema: Yup.object({
-      title: Yup.string().min(3).required('Privalomas laukas'),
-      author: Yup.string().min(3).required(),
-      date: Yup.date().required(),
-      content: Yup.string().min(5, 'Prasom placiau').required(),
-    }),
+    // validationSchema: Yup.object({
+    //   title: Yup.string().min(3).required('Privalomas laukas'),
+    //   author: Yup.string().min(3).required(),
+    //   date: Yup.date().required(),
+    //   content: Yup.string().min(5, 'Prasom placiau').required(),
+    // }),
     onSubmit: (valuesObj) => {
       console.log('Submited');
       console.log('valuesObj ===', valuesObj);
@@ -106,7 +106,9 @@ function AddPostPage() {
         console.log('ats ===', ats);
       })
       .catch((error) => {
-        console.warn('ivyko klaida:', error.response.data);
+        const errorObjFromBE = error.response.data;
+        console.warn('ivyko klaida:', errorObjFromBE);
+        formik.setErrors(errorObjFromBE);
       });
   }
 
