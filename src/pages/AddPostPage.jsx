@@ -32,6 +32,44 @@ const categotries = [
   },
 ];
 
+function SmartInput({ id, formik, type = 'text' }) {
+  // id = title
+
+  const areaInput = (
+    <textarea
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values[id]}
+      className='form-control'
+      id={id}
+      rows='3'></textarea>
+  );
+
+  return (
+    <>
+      <label className='form-label w-100'>
+        <span>{id.charAt(0).toUpperCase() + id.slice(1)}</span>
+
+        {type === 'textarea' ? (
+          areaInput
+        ) : (
+          <input
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values[id]}
+            type={type}
+            className='form-control'
+            id={id}
+          />
+        )}
+      </label>
+      {formik.touched[id] && formik.errors[id] && (
+        <p className='text-danger'>{formik.errors[id]}</p>
+      )}
+    </>
+  );
+}
+
 function AddPostPage() {
   const formik = useFormik({
     initialValues: {
@@ -39,11 +77,13 @@ function AddPostPage() {
       author: '',
       content: '',
       date: '',
-      cat_id: 1,
+      cat_id: 3,
     },
     validationSchema: Yup.object({
       title: Yup.string().min(3).required('Privalomas laukas'),
       author: Yup.string().min(3).required(),
+      date: Yup.date().required(),
+      content: Yup.string().min(5, 'Prasom placiau').required(),
     }),
     onSubmit: (valuesObj) => {
       console.log('Submited');
@@ -80,62 +120,17 @@ function AddPostPage() {
 
       <form onSubmit={formik.handleSubmit}>
         <div className='mb-3'>
-          <label htmlFor='title' className='form-label'>
-            Title
-          </label>
-          <input
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.title}
-            type='text'
-            className='form-control'
-            id='title'
-          />
-          {formik.touched.title && formik.errors.title && (
-            <p className='text-danger'>{formik.errors.title}</p>
-          )}
+          <SmartInput id='title' formik={formik} />
         </div>
 
         <div className='mb-3'>
-          <label htmlFor='author' className='form-label'>
-            Author
-          </label>
-          <input
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.author}
-            type='text'
-            className='form-control'
-            id='author'
-          />
-          {formik.touched.author && formik.errors.author && (
-            <p className='text-danger'>{formik.errors.author}</p>
-          )}
+          <SmartInput id='author' formik={formik} />
         </div>
         <div className='mb-3'>
-          <label htmlFor='date' className='form-label'>
-            Date
-          </label>
-          <input
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.date}
-            type='datetime-local'
-            className='form-control'
-            id='date'
-          />
+          <SmartInput id='date' type='date' formik={formik} />
         </div>
         <div className='mb-3'>
-          <label htmlFor='content' className='form-label'>
-            Content
-          </label>
-          <textarea
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.content}
-            className='form-control'
-            id='content'
-            rows='3'></textarea>
+          <SmartInput id='content' type='textarea' formik={formik} />
         </div>
         <div className='mb-3'>
           <label htmlFor='exampleInputPassword1' className='form-label'>
@@ -148,7 +143,9 @@ function AddPostPage() {
             className='form-select'
             aria-label='Default select example'
             id='cat_id'>
-            <option defaultValue>Select category</option>
+            <option disabled defaultValue>
+              Select category
+            </option>
             {categotries.map((cat) => (
               <option key={cat.cat_id} value={cat.cat_id}>
                 {cat.title}
