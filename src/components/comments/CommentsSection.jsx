@@ -1,20 +1,60 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
 import useApiData from '../../hooks/useApiData';
+import SmartInput from './../UI/SmartInput';
+import { useFormik } from 'formik';
+import axios from 'axios';
 
 const baseCommUrl = 'http://localhost:3000/api/comments/post';
 
 function CommentsSection({ postId }) {
   console.log('postId ===', postId);
+  const currentPath = `${baseCommUrl}/${postId}`;
 
-  const [commArr, setCommArr, err] = useApiData(`${baseCommUrl}/${postId}`);
+  const [commArr, setCommArr, err] = useApiData(currentPath);
   console.log('commArr ===', commArr);
+
+  const formik = useFormik({
+    initialValues: {
+      author: '',
+      comment: '',
+    },
+    onSubmit: (valuesObj) => {
+      console.log('valuesObj ===', valuesObj);
+
+      sendToBackEnd(valuesObj);
+    },
+  });
+
+  async function sendToBackEnd(data) {
+    try {
+      const resp = await axios.post(currentPath, data);
+      console.log('resp ===', resp);
+      if (resp.status === 201) {
+        // tikrai success
+        const newState = [...commArr, { comm_id: resp.data.comm_id, ...data }];
+        setCommArr(newState);
+        formik.resetForm();
+      }
+    } catch (error) {
+      console.log('error ===', error);
+    }
+  }
 
   return (
     <section>
       <h3>Comments</h3>
-      <form action=''>
+      <form className='mb-5' onSubmit={formik.handleSubmit}>
         <h2>Create comment form</h2>
+        <div className='mb-3'>
+          <SmartInput id={'author'} formik={formik} />
+        </div>
+        <div className='mb-3'>
+          <SmartInput id={'comment'} type='textarea' formik={formik} />
+        </div>
+        <button type='submit' className='btn btn-info'>
+          Comment
+        </button>
       </form>
       <ul>
         {commArr.map((cObj) => (
