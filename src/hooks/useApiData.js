@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export default function useApiData(apiUrl) {
-  const [dataArr, setDataArr] = useState([]);
+export default function useApiData(apiUrl, initValue = []) {
+  const [dataArr, setDataArr] = useState(initValue);
   const [apiErr, setApiErr] = useState({});
 
   useEffect(() => {

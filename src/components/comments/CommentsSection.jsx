@@ -10,26 +10,6 @@ function CommentsSection({ postId }) {
   const [commArr, setCommArr, err] = useApiData(`${baseCommUrl}/${postId}`);
   console.log('commArr ===', commArr);
 
-  // const [commArr, setCommArr] = useState([]);
-
-  // useEffect(() => {
-  //   getPost(`${baseCommUrl}/${postId}`);
-
-  //   function getPost(url) {
-  //     console.log('getPosts');
-  //     axios
-  //       .get(url)
-  //       .then((response) => {
-  //         console.log('response ===', response);
-  //         const commFromAPI = response.data;
-  //         setCommArr(commFromAPI);
-  //       })
-  //       .catch((error) => {
-  //         console.log('error ===', error);
-  //       });
-  //   }
-  // }, [postId]);
-
   return (
     <section>
       <h3>Comments</h3>
@@ -37,10 +17,12 @@ function CommentsSection({ postId }) {
         <h2>Create comment form</h2>
       </form>
       <ul>
-        <li>commm1</li>
-        <li>commm1</li>
-        <li>commm1</li>
-        <li>commm1</li>
+        {commArr.map((cObj) => (
+          <li className='border p-4' key={cObj.comm_id}>
+            <h3 className='fs-5'>Author: {cObj.author}</h3>
+            <p>{cObj.comment}</p>
+          </li>
+        ))}
       </ul>
     </section>
   );
