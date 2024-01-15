@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuthContext } from '../store/authContext';
+import CommentsSection from '../components/comments/CommentsSection';
 
 const basePostsUrl = 'http://localhost:3000/api/posts';
 
@@ -60,18 +61,7 @@ function SinglePostPage() {
       <p>{postObj.content}</p>
       <p className='lead fs-3'>{postObj.categoryName}</p>
 
-      <section>
-        <h3>Comments</h3>
-        <form action=''>
-          <h2>Create comment form</h2>
-        </form>
-        <ul>
-          <li>commm1</li>
-          <li>commm1</li>
-          <li>commm1</li>
-          <li>commm1</li>
-        </ul>
-      </section>
+      <CommentsSection postId={postId} />
     </div>
   );
 }
