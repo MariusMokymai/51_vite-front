@@ -73,18 +73,22 @@ function SmartInput({ id, formik, type = 'text' }) {
 function AddPostPage() {
   const formik = useFormik({
     initialValues: {
-      title: '',
+      title: 'James Title',
       author: '',
       content: '',
       date: '',
-      cat_id: 3,
+      cat_id: 0,
     },
-    // validationSchema: Yup.object({
-    //   title: Yup.string().min(3).required('Privalomas laukas'),
-    //   author: Yup.string().min(3).required(),
-    //   date: Yup.date().required(),
-    //   content: Yup.string().min(5, 'Prasom placiau').required(),
-    // }),
+    validationSchema: Yup.object({
+      title: Yup.string().min(3).required('Privalomas laukas'),
+      author: Yup.string().min(3).required(),
+      date: Yup.date().required(),
+      content: Yup.string().min(5, 'Prasom placiau').required(),
+      cat_id: Yup.number()
+        .integer()
+        .min(1, 'Bukite malonus pasirinkite kategorija')
+        .required(),
+    }),
     onSubmit: (valuesObj) => {
       console.log('Submited');
       console.log('valuesObj ===', valuesObj);
@@ -145,7 +149,7 @@ function AddPostPage() {
             className='form-select'
             aria-label='Default select example'
             id='cat_id'>
-            <option disabled defaultValue>
+            <option value={0} disabled defaultValue>
               Select category
             </option>
             {categotries.map((cat) => (
@@ -154,6 +158,9 @@ function AddPostPage() {
               </option>
             ))}
           </select>
+          {formik.touched.cat_id && formik.errors.cat_id && (
+            <p className='text-danger'>{formik.errors.cat_id}</p>
+          )}
         </div>
         <button type='submit' className='btn btn-primary'>
           Create
