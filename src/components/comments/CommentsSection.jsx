@@ -32,8 +32,12 @@ function CommentsSection({ postId }) {
       console.log('resp ===', resp);
       if (resp.status === 201) {
         // tikrai success
-        const newState = [...commArr, { comm_id: resp.data.comm_id, ...data }];
-        setCommArr(newState);
+        // data.comm_id = resp.data.comm_id;
+        setCommArr((prevState) => {
+          const newCommentAdded = { comm_id: resp.data.comm_id, ...data };
+          const newState = [...prevState, newCommentAdded];
+          return newState;
+        });
         formik.resetForm();
       }
     } catch (error) {
