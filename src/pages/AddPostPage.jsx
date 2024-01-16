@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuthContext } from '../store/authContext';
+import SmartInput from '../components/UI/SmartInput';
 
 const postsUrl = 'http://localhost:3000/api/posts';
 
@@ -32,49 +33,51 @@ const categotries = [
   },
 ];
 
-function SmartInput({ id, formik, type = 'text' }) {
-  // id = title
+// function SmartInput({ id, formik, type = 'text' }) {
+//   // id = title
 
-  const areaInput = (
-    <textarea
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      value={formik.values[id]}
-      className='form-control'
-      id={id}
-      rows='3'></textarea>
-  );
+//   const areaInput = (
+//     <textarea
+//       onChange={formik.handleChange}
+//       onBlur={formik.handleBlur}
+//       value={formik.values[id]}
+//       className='form-control'
+//       id={id}
+//       rows='3'></textarea>
+//   );
 
-  return (
-    <>
-      <label className='form-label w-100'>
-        <span>{id.charAt(0).toUpperCase() + id.slice(1)}</span>
+//   return (
+//     <>
+//       <label className='form-label w-100'>
+//         <span>{id.charAt(0).toUpperCase() + id.slice(1)}</span>
 
-        {type === 'textarea' ? (
-          areaInput
-        ) : (
-          <input
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values[id]}
-            type={type}
-            className='form-control'
-            id={id}
-          />
-        )}
-      </label>
-      {formik.touched[id] && formik.errors[id] && (
-        <p className='text-danger'>{formik.errors[id]}</p>
-      )}
-    </>
-  );
-}
+//         {type === 'textarea' ? (
+//           areaInput
+//         ) : (
+//           <input
+//             onChange={formik.handleChange}
+//             onBlur={formik.handleBlur}
+//             value={formik.values[id]}
+//             type={type}
+//             className='form-control'
+//             id={id}
+//           />
+//         )}
+//       </label>
+//       {formik.touched[id] && formik.errors[id] && (
+//         <p className='text-danger'>{formik.errors[id]}</p>
+//       )}
+//     </>
+//   );
+// }
 
 function AddPostPage() {
+  const { userEmail } = useAuthContext();
+
   const formik = useFormik({
     initialValues: {
       title: 'James Title',
-      author: '',
+      author: userEmail,
       content: '',
       date: '',
       cat_id: 0,
@@ -84,10 +87,7 @@ function AddPostPage() {
       author: Yup.string().min(3).required(),
       date: Yup.date().required(),
       content: Yup.string().min(5, 'Prasom placiau').required(),
-      cat_id: Yup.number()
-        .integer()
-        .min(1, 'Bukite malonus pasirinkite kategorija')
-        .required(),
+      cat_id: Yup.number().integer().min(1, 'Bukite malonus pasirinkite kategorija').required(),
     }),
     onSubmit: (valuesObj) => {
       console.log('Submited');
@@ -130,7 +130,7 @@ function AddPostPage() {
         </div>
 
         <div className='mb-3'>
-          <SmartInput id='author' formik={formik} />
+          <SmartInput id='author' readOnly formik={formik} />
         </div>
         <div className='mb-3'>
           <SmartInput id='date' type='date' formik={formik} />

@@ -4,10 +4,13 @@ import useApiData from '../../hooks/useApiData';
 import SmartInput from './../UI/SmartInput';
 import { useFormik } from 'formik';
 import axios from 'axios';
+import { useAuthContext } from '../../store/authContext';
 
 const baseCommUrl = 'http://localhost:3000/api/comments/post';
 
 function CommentsSection({ postId }) {
+  const { userEmail, token } = useAuthContext();
+
   console.log('postId ===', postId);
   const currentPath = `${baseCommUrl}/${postId}`;
 
@@ -16,7 +19,7 @@ function CommentsSection({ postId }) {
 
   const formik = useFormik({
     initialValues: {
-      author: '',
+      author: userEmail,
       comment: '',
     },
     onSubmit: (valuesObj) => {
@@ -28,7 +31,9 @@ function CommentsSection({ postId }) {
 
   async function sendToBackEnd(data) {
     try {
-      const resp = await axios.post(currentPath, data);
+      const resp = await axios.post(currentPath, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log('resp ===', resp);
       if (resp.status === 201) {
         // tikrai success
@@ -51,7 +56,7 @@ function CommentsSection({ postId }) {
       <form className='mb-5' onSubmit={formik.handleSubmit}>
         <h2>Create comment form</h2>
         <div className='mb-3'>
-          <SmartInput id={'author'} formik={formik} />
+          <SmartInput readOnly id={'author'} formik={formik} />
         </div>
         <div className='mb-3'>
           <SmartInput id={'comment'} type='textarea' formik={formik} />

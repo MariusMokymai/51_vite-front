@@ -1,4 +1,4 @@
-function SmartInput({ id, formik, type = 'text' }) {
+function SmartInput({ id, formik, type = 'text', readOnly = false }) {
   // id = title
 
   const areaInput = (
@@ -20,6 +20,7 @@ function SmartInput({ id, formik, type = 'text' }) {
           areaInput
         ) : (
           <input
+            disabled={readOnly}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values[id]}
