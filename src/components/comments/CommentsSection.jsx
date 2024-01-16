@@ -67,7 +67,9 @@ function CommentsSection({ postId }) {
       </form>
       <ul>
         {commArr.map((cObj) => (
-          <li className='border p-4' key={cObj.comm_id}>
+          <li
+            className={'border p-4 ' + `${cObj.userEmail === userEmail ? 'bg-primary-subtle' : ''}`}
+            key={cObj.comm_id}>
             <h3 className='fs-5'>Author: {cObj.author}</h3>
             <p>{cObj.comment}</p>
           </li>
