@@ -15,6 +15,7 @@ const postObj = {
 
 function SinglePost({ post }) {
   const { userEmail } = useAuthContext();
+
   return (
     <li
       className={`card ${
@@ -24,6 +25,7 @@ function SinglePost({ post }) {
         <h5 className='card-title'>{post.title}</h5>
         <h6 className='card-subtitle mb-2 text-muted'>{post.author}</h6>
         <p className='card-text'>{post.content}</p>
+        <p className='card-text fs-5 font-monospace'>Email: {post.userEmail}</p>
         <p className='card-text'>Date: {post.date}</p>
         <p className='card-text'>Comment Count: {post.commentCount}</p>
         <p className='card-text'>Category: {post.categoryName}</p>
